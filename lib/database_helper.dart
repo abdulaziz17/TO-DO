@@ -1,13 +1,17 @@
-import 'Note.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
+import 'Note.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
+  // Singleton
   static DatabaseHelper _databaseHelper;
+
+  // Singleton
   static Database _database;
 
+  // Strings that we will be using to store into the Database
   String noteTable = 'note_table';
   String colID = 'id';
   String colTitle = 'title';
@@ -24,6 +28,8 @@ class DatabaseHelper {
     return _databaseHelper;
   }
 
+  // Custom getter
+
   Future<Database> get database async {
     if (_database == null) {
       _database = await initializeDatabase();
@@ -35,14 +41,18 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'notes.db';
 
-    var notesDatabse =
-        await openDatabase(path, version: 1, onCreate: _createDB);
-    return notesDatabse;
+    var notesDatabase = await openDatabase(
+      path,
+      version: 1,
+      onCreate: _createDb,
+    );
+
+    return notesDatabase;
   }
 
-  void _createDB(Database db, int newVersion) async {
+  void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT,$colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)');
+        "CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)");
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
@@ -64,10 +74,9 @@ class DatabaseHelper {
     return result;
   }
 
-  Future<int> deleteNote(Note id) async {
+  Future<int> deleteNote(int id) async {
     Database db = await this.database;
-    int result =
-        await db.rawDelete('DELETE FROM $noteTable where $colID = $id');
+    var result = await db.delete(noteTable, where: "$colID = $id");
     return result;
   }
 
@@ -85,9 +94,11 @@ class DatabaseHelper {
     int count = noteMapList.length;
 
     List<Note> noteList = List<Note>();
+
     for (var i = 0; i < count; i++) {
       noteList.add(Note.fromMapObject(noteMapList[i]));
     }
+
     return noteList;
   }
 }
