@@ -52,11 +52,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
-<<<<<<< HEAD
         "CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT,$colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)");
-=======
-        "CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)");
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
@@ -80,11 +76,7 @@ class DatabaseHelper {
 
   Future<int> deleteNote(int id) async {
     Database db = await this.database;
-<<<<<<< HEAD
-     var result = await db.delete(noteTable, where: "$colID = $id");
-=======
     var result = await db.delete(noteTable, where: "$colID = $id");
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     return result;
   }
 

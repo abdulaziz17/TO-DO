@@ -3,19 +3,13 @@ import 'package:intl/intl.dart';
 
 import '../Note.dart';
 import '../database_helper.dart';
-<<<<<<< HEAD
-import 'package:intl/intl.dart';
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
 import '../util.dart';
 
 class NoteDetail extends StatefulWidget {
   final String appBarTitle;
   final Note note;
-<<<<<<< HEAD
-=======
 
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
+
   NoteDetail(this.note, this.appBarTitle);
 
   @override
@@ -25,10 +19,6 @@ class NoteDetail extends StatefulWidget {
 }
 
 class NoteDetailState extends State<NoteDetail> {
-<<<<<<< HEAD
-  
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   DatabaseHelper helper = DatabaseHelper();
   String appBarTitle;
   Note note;
@@ -42,10 +32,6 @@ class NoteDetailState extends State<NoteDetail> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
-<<<<<<< HEAD
-
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     titleController.text = note.title;
     descriptionController.text = note.description;
     return WillPopScope(
@@ -56,14 +42,9 @@ class NoteDetailState extends State<NoteDetail> {
       child: Scaffold(
         backgroundColor: Colors.cyanAccent,
         appBar: AppBar(
-<<<<<<< HEAD
-            title: Text(appBarTitle),
-          leading: IconButton(
-            
-=======
+
           title: Text(appBarTitle),
           leading: IconButton(
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
             onPressed: moveToLastScreen,
             icon: Icon(Icons.arrow_back),
           ),
@@ -91,21 +72,12 @@ class NoteDetailState extends State<NoteDetail> {
                                     color: Colors.red)),
                           );
                         }).toList(),
-<<<<<<< HEAD
                        value: Util.getPrioritiyAsString(note.priority),
-=======
-                        value: Util.getPrioritiyAsString(note.priority),
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
                         onChanged: (valueSelectedByUser) {
                           setState(() {
                             updatePriorityAsInt(valueSelectedByUser);
                           });
-<<<<<<< HEAD
-                        },
-                   ),
-=======
                         }),
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
                   ),
                 ),
                 Padding(
@@ -218,19 +190,13 @@ class NoteDetailState extends State<NoteDetail> {
     moveToLastScreen();
 
     if (note.id == null) {
-<<<<<<< HEAD
-      _showAlertDialog("Status", "Please add a Note");
-=======
+
       _showAlertDialog("Status", "First Add a Note");
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
       return;
     }
 
     int result = await helper.deleteNote(note.id);
-<<<<<<< HEAD
-=======
 
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     if (result != 0) {
       _showAlertDialog("Status", "Note Deleted Successfully");
     } else {
@@ -249,11 +215,8 @@ class NoteDetailState extends State<NoteDetail> {
     }
   }
 
-<<<<<<< HEAD
   //Convert int to string to show to user
 
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
@@ -269,9 +232,4 @@ class NoteDetailState extends State<NoteDetail> {
   void moveToLastScreen() {
     Navigator.pop(context, true);
   }
-<<<<<<< HEAD
-
-  
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
 }

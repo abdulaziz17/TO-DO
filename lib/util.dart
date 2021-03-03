@@ -13,8 +13,4 @@ class Util {
     }
     return priority;
   }
-<<<<<<< HEAD
 } 
-=======
-}
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db

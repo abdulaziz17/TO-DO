@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-<<<<<<< HEAD
-import '../database_helper.dart';
-=======
 
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
-import '../Note.dart';
 import '../database_helper.dart';
+
+import '../Note.dart';
 import '../util.dart';
 import 'note_details.dart';
-<<<<<<< HEAD
-import '../util.dart';
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
 
 class NoteList extends StatefulWidget {
   @override
@@ -23,17 +16,12 @@ class _NoteListState extends State<NoteList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Note> noteList;
   int count = 0;
-<<<<<<< HEAD
-Future<List<Note>> getNoteList() async {
-=======
 
   Future<List<Note>> getNoteList() async {
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     this.noteList = await databaseHelper.getNoteList();
     return noteList;
   }
 
- 
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
@@ -46,12 +34,8 @@ Future<List<Note>> getNoteList() async {
       });
     });
   }
-<<<<<<< HEAD
-   @override
-=======
 
   @override
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -136,8 +120,4 @@ Future<List<Note>> getNoteList() async {
       ),
     );
   }
-<<<<<<< HEAD
-
-=======
->>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
 }
