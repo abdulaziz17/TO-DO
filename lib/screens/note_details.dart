@@ -1,14 +1,21 @@
-// import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import '../Note.dart';
 import '../database_helper.dart';
+<<<<<<< HEAD
 import 'package:intl/intl.dart';
+=======
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
 import '../util.dart';
 
 class NoteDetail extends StatefulWidget {
   final String appBarTitle;
   final Note note;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   NoteDetail(this.note, this.appBarTitle);
 
   @override
@@ -18,20 +25,27 @@ class NoteDetail extends StatefulWidget {
 }
 
 class NoteDetailState extends State<NoteDetail> {
+<<<<<<< HEAD
   
+=======
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   DatabaseHelper helper = DatabaseHelper();
   String appBarTitle;
   Note note;
   final List<String> _priorities = Util.priorities;
 
   NoteDetailState(this.note, this.appBarTitle);
+
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     titleController.text = note.title;
     descriptionController.text = note.description;
     return WillPopScope(
@@ -42,9 +56,14 @@ class NoteDetailState extends State<NoteDetail> {
       child: Scaffold(
         backgroundColor: Colors.cyanAccent,
         appBar: AppBar(
+<<<<<<< HEAD
             title: Text(appBarTitle),
           leading: IconButton(
             
+=======
+          title: Text(appBarTitle),
+          leading: IconButton(
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
             onPressed: moveToLastScreen,
             icon: Icon(Icons.arrow_back),
           ),
@@ -59,7 +78,6 @@ class NoteDetailState extends State<NoteDetail> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 5.0),
-                  //dropdown menu
                   child: new ListTile(
                     leading: const Icon(Icons.low_priority),
                     title: DropdownButton(
@@ -70,19 +88,26 @@ class NoteDetailState extends State<NoteDetail> {
                                 style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue)),
+                                    color: Colors.red)),
                           );
                         }).toList(),
+<<<<<<< HEAD
                        value: Util.getPrioritiyAsString(note.priority),
+=======
+                        value: Util.getPrioritiyAsString(note.priority),
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
                         onChanged: (valueSelectedByUser) {
                           setState(() {
                             updatePriorityAsInt(valueSelectedByUser);
                           });
+<<<<<<< HEAD
                         },
                    ),
+=======
+                        }),
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
                   ),
                 ),
-                // Second Element
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 15.0),
                   child: TextField(
@@ -98,8 +123,6 @@ class NoteDetailState extends State<NoteDetail> {
                     ),
                   ),
                 ),
-
-                // Third Element
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0, left: 15.0),
                   child: TextField(
@@ -114,8 +137,6 @@ class NoteDetailState extends State<NoteDetail> {
                     ),
                   ),
                 ),
-
-                // Fourth Element
                 Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Row(
@@ -177,6 +198,7 @@ class NoteDetailState extends State<NoteDetail> {
 
   void _save() async {
     moveToLastScreen();
+
     note.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
     if (note.id != null) {
@@ -194,12 +216,21 @@ class NoteDetailState extends State<NoteDetail> {
 
   void _delete() async {
     moveToLastScreen();
+
     if (note.id == null) {
+<<<<<<< HEAD
       _showAlertDialog("Status", "Please add a Note");
+=======
+      _showAlertDialog("Status", "First Add a Note");
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
       return;
     }
 
     int result = await helper.deleteNote(note.id);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     if (result != 0) {
       _showAlertDialog("Status", "Note Deleted Successfully");
     } else {
@@ -207,7 +238,6 @@ class NoteDetailState extends State<NoteDetail> {
     }
   }
 
-  //Convert to int to save into database
   void updatePriorityAsInt(String value) {
     switch (value) {
       case 'High':
@@ -219,8 +249,11 @@ class NoteDetailState extends State<NoteDetail> {
     }
   }
 
+<<<<<<< HEAD
   //Convert int to string to show to user
 
+=======
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   void _showAlertDialog(String title, String message) {
     AlertDialog alertDialog = AlertDialog(
       title: Text(title),
@@ -236,6 +269,9 @@ class NoteDetailState extends State<NoteDetail> {
   void moveToLastScreen() {
     Navigator.pop(context, true);
   }
+<<<<<<< HEAD
 
   
+=======
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
 }

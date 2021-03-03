@@ -10,7 +10,6 @@ class Note {
   Note.withId(this._id, this._title, this._date, this._priority,
       [this._description]);
 
-  // Getters
   int get id => _id;
 
   String get title => _title;
@@ -21,7 +20,6 @@ class Note {
 
   int get priority => _priority;
 
-  // Setters
   set title(String newTitle) {
     if (newTitle.length <= 255) {
       this._title = newTitle;
@@ -44,9 +42,6 @@ class Note {
     }
   }
 
-  //Used to save and retreive from DB
-
-  //Converting the note to a map that is key value pair
   Map<String, dynamic> toMap() {
     var map = Map<String, dynamic>();
     if (id != null) {

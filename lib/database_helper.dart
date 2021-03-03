@@ -1,13 +1,17 @@
-import 'Note.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
+import 'Note.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper {
+  // Singleton
   static DatabaseHelper _databaseHelper;
+
+  // Singleton
   static Database _database;
 
+  // Strings that we will be using to store into the Database
   String noteTable = 'note_table';
   String colID = 'id';
   String colTitle = 'title';
@@ -23,6 +27,8 @@ class DatabaseHelper {
     }
     return _databaseHelper;
   }
+
+  // Custom getter
 
   Future<Database> get database async {
     if (_database == null) {
@@ -46,7 +52,11 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
     await db.execute(
+<<<<<<< HEAD
         "CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT,$colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)");
+=======
+        "CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)");
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
@@ -70,7 +80,11 @@ class DatabaseHelper {
 
   Future<int> deleteNote(int id) async {
     Database db = await this.database;
+<<<<<<< HEAD
      var result = await db.delete(noteTable, where: "$colID = $id");
+=======
+    var result = await db.delete(noteTable, where: "$colID = $id");
+>>>>>>> 8e37f0c385649d96f5e056622c6341add55790db
     return result;
   }
 
@@ -88,9 +102,11 @@ class DatabaseHelper {
     int count = noteMapList.length;
 
     List<Note> noteList = List<Note>();
+
     for (var i = 0; i < count; i++) {
       noteList.add(Note.fromMapObject(noteMapList[i]));
     }
+
     return noteList;
   }
 }
