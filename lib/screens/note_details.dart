@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import '../Note.dart';
 import '../database_helper.dart';
 import 'package:intl/intl.dart';
+import '../util.dart';
 
-class NoteDetails extends StatefulWidget {
+class NoteDetail extends StatefulWidget {
   final String appBarTitle;
   final Note note;
-  NoteDetails(this.note, this.appBarTitle);
+  NoteDetail(this.note, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
@@ -16,11 +17,12 @@ class NoteDetails extends StatefulWidget {
   }
 }
 
-class NoteDetailState extends State<NoteDetails> {
-  static var _priorities = ['high', 'low'];
+class NoteDetailState extends State<NoteDetail> {
+  
   DatabaseHelper helper = DatabaseHelper();
   String appBarTitle;
   Note note;
+  final List<String> _priorities = Util.priorities;
 
   NoteDetailState(this.note, this.appBarTitle);
   TextEditingController titleController = TextEditingController();
@@ -28,7 +30,7 @@ class NoteDetailState extends State<NoteDetails> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.title;
+    TextStyle textStyle = Theme.of(context).textTheme.bodyText1;
 
     titleController.text = note.title;
     descriptionController.text = note.description;
@@ -40,13 +42,11 @@ class NoteDetailState extends State<NoteDetails> {
       child: Scaffold(
         backgroundColor: Colors.cyanAccent,
         appBar: AppBar(
-          title: Text(
-            appBarTitle,
-          ),
-          backgroundColor: Colors.blueAccent,
+            title: Text(appBarTitle),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            
             onPressed: moveToLastScreen,
+            icon: Icon(Icons.arrow_back),
           ),
         ),
         body: Padding(
@@ -73,14 +73,13 @@ class NoteDetailState extends State<NoteDetails> {
                                     color: Colors.blue)),
                           );
                         }).toList(),
-                       
+                       value: Util.getPrioritiyAsString(note.priority),
                         onChanged: (valueSelectedByUser) {
                           setState(() {
                             updatePriorityAsInt(valueSelectedByUser);
                           });
                         },
-                         value: getPriorityAsString(note.priority),
-                        ),
+                   ),
                   ),
                 ),
                 // Second Element
@@ -111,7 +110,6 @@ class NoteDetailState extends State<NoteDetails> {
                     },
                     decoration: InputDecoration(
                       labelText: 'Details',
-                      labelStyle: textStyle,
                       icon: Icon(Icons.details),
                     ),
                   ),
@@ -188,24 +186,24 @@ class NoteDetailState extends State<NoteDetails> {
     }
 
     if (result != 0) {
-      _showAlertDialog('Status', 'Note Saved Successfully');
+      _showAlertDialog("Status", "Note Saved Successfully");
     } else {
-      _showAlertDialog('Status', 'Problem Saving Note');
+      _showAlertDialog("Status", "Problem Saving Note");
     }
   }
 
   void _delete() async {
     moveToLastScreen();
     if (note.id == null) {
-      _showAlertDialog('Status', 'Please add a Note');
+      _showAlertDialog("Status", "Please add a Note");
       return;
     }
 
-    int result = await helper.deleteNote(note);
+    int result = await helper.deleteNote(note.id);
     if (result != 0) {
-      _showAlertDialog('Status', 'Note Deleted Successfully');
+      _showAlertDialog("Status", "Note Deleted Successfully");
     } else {
-      _showAlertDialog('Status', 'Error');
+      _showAlertDialog("Status", "Error");
     }
   }
 
@@ -215,7 +213,7 @@ class NoteDetailState extends State<NoteDetails> {
       case 'High':
         note.priority = 1;
         break;
-      case 'low':
+      case 'Low':
         note.priority = 2;
         break;
     }
@@ -223,28 +221,21 @@ class NoteDetailState extends State<NoteDetails> {
 
   //Convert int to string to show to user
 
-  String getPriorityAsString(int value) {
-    String priority;
-    switch (value) {
-      case 1:
-        priority = _priorities[0];
-        break;
-      case 2:
-        priority = _priorities[1];
-        break;
-    }
-    return priority;
+  void _showAlertDialog(String title, String message) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(title),
+      content: Text(message),
+    );
+    showDialog(
+      context: context,
+      builder: (_) => alertDialog,
+    );
   }
+  
 
   void moveToLastScreen() {
     Navigator.pop(context, true);
   }
 
-  void _showAlertDialog(String title, String msg) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(title),
-      content: Text(msg),
-    );
-    showDialog(context: context, builder: (_) => alertDialog);
-  }
+  
 }

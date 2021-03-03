@@ -35,14 +35,18 @@ class DatabaseHelper {
     Directory directory = await getApplicationDocumentsDirectory();
     String path = directory.path + 'notes.db';
 
-    var notesDatabse =
-        await openDatabase(path, version: 1, onCreate: _createDB);
-    return notesDatabse;
+    var notesDatabase = await openDatabase(
+      path,
+      version: 1,
+      onCreate: _createDb,
+    );
+
+    return notesDatabase;
   }
 
-  void _createDB(Database db, int newVersion) async {
+  void _createDb(Database db, int newVersion) async {
     await db.execute(
-        'CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT,$colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)');
+        "CREATE TABLE $noteTable($colID INTEGER PRIMARY KEY AUTOINCREMENT,$colTitle TEXT, $colDescription TEXT, $colPriority INTEGER, $colDate TEXT)");
   }
 
   Future<List<Map<String, dynamic>>> getNoteMapList() async {
@@ -64,10 +68,9 @@ class DatabaseHelper {
     return result;
   }
 
-  Future<int> deleteNote(Note id) async {
+  Future<int> deleteNote(int id) async {
     Database db = await this.database;
-    int result =
-        await db.rawDelete('DELETE FROM $noteTable where $colID = $id');
+     var result = await db.delete(noteTable, where: "$colID = $id");
     return result;
   }
 

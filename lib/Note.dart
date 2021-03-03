@@ -5,15 +5,20 @@ class Note {
   String _date;
   int _priority;
 
-  Note(this._title, this._description, this._date, [this._priority]);
-  Note.withId(this._id, this._title, this._description, this._date,
-      [this._priority]);
+  Note(this._title, this._date, this._priority, [this._description]);
+
+  Note.withId(this._id, this._title, this._date, this._priority,
+      [this._description]);
 
   // Getters
   int get id => _id;
+
   String get title => _title;
+
   String get description => _description;
+
   String get date => _date;
+
   int get priority => _priority;
 
   // Setters
@@ -23,9 +28,9 @@ class Note {
     }
   }
 
-  set description(String newdescription) {
-    if (newdescription.length <= 255) {
-      this._description = description;
+  set description(String newDescription) {
+    if (newDescription.length <= 255) {
+      this._description = newDescription;
     }
   }
 
@@ -55,11 +60,11 @@ class Note {
     return map;
   }
 
-  Note.fromMapObject(Map<String, dynamic> newMap) {
-    this._id = newMap['id'];
-    this._title = newMap['title'];
-    this._description = newMap['description'];
-    this._priority = newMap['priority'];
-    this._date = newMap['date'];
+  Note.fromMapObject(Map<String, dynamic> map) {
+    this._id = map['id'];
+    this._title = map['title'];
+    this._description = map['description'];
+    this._priority = map['priority'];
+    this._date = map['date'];
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-// import 'dart:async';
 import '../database_helper.dart';
 import '../Note.dart';
 import 'note_details.dart';
-// import 'package:sqflite/sqflite.dart';
+import '../util.dart';
 
 class NoteList extends StatefulWidget {
   @override
@@ -15,76 +14,12 @@ class _NoteListState extends State<NoteList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Note> noteList;
   int count = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    if (noteList != null) {
-      noteList = List<Note>();
-      updateListView();
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My To-Do List'),
-        backgroundColor: Colors.blue,
-      ),
-      body: getNodeListView(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue[400],
-        child: Icon(Icons.add),
-        onPressed: () {
-          navigateToDetail(Note('', '', '', 1), 'Add A Note');
-        },
-      ),
-    );
+Future<List<Note>> getNoteList() async {
+    this.noteList = await databaseHelper.getNoteList();
+    return noteList;
   }
 
-  ListView getNodeListView() {
-    return ListView.builder(
-      itemCount: count,
-      itemBuilder: (context, position) {
-        return Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          color: Colors.purple,
-          elevation: 4.0,
-          child: ListTile(
-              leading: CircleAvatar(
-                backgroundImage:
-                    NetworkImage("https://learncodeonline.in/mascot.png"),
-              ),
-              title: Text(this.noteList[position].title,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25.0)),
-              subtitle: Text(
-                this.noteList[position].date,
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: GestureDetector(
-                  child: Icon(
-                    Icons.open_in_new,
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    navigateToDetail(this.noteList[position], 'Edit task');
-                  })),
-        );
-      },
-    );
-  }
-
-  void navigateToDetail(Note note, String title) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NoteDetails(note, title);
-    }));
-
-    if (result == true) {
-      updateListView();
-    }
-  }
-
+ 
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
@@ -97,4 +32,90 @@ class _NoteListState extends State<NoteList> {
       });
     });
   }
+   @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('ToDo App'),
+      ),
+      body: FutureBuilder<List<Note>>(
+          future: getNoteList(),
+          builder: (BuildContext context, AsyncSnapshot<List<Note>> snapshot) {
+            if (snapshot.hasData) {
+              List<Note> noteList = snapshot.data;
+
+              if (noteList.isEmpty) {
+                return Center(
+                  child: Text('Add notes by tapping on the + button'),
+                );
+              }
+
+              return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: noteList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Note note = noteList.elementAt(index);
+                  String noteTitle = note.title;
+                  String noteDescription = note.description;
+                  String noteDate = note.date;
+                  int notePriorityAsInt = note.priority;
+                  String notePriorityAsString =
+                      Util.getPrioritiyAsString(notePriorityAsInt);
+
+                  return ListTile(
+                    title: Text(noteTitle),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        noteDescription != null
+                            ? Text(noteDescription)
+                            : SizedBox.shrink(),
+                        Text(
+                          noteDate,
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                    trailing: Text(notePriorityAsString),
+                    onTap: () async {
+                      bool result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => NoteDetail(note, "Edit Note"),
+                        ),
+                      );
+
+                      if (result == true) {
+                        updateListView();
+                      }
+                    },
+                  );
+                },
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          }),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () async {
+          bool result = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => NoteDetail(Note("", "", 2), "Add Note"),
+            ),
+          );
+
+          if (result == true) {
+            updateListView();
+          }
+        },
+      ),
+    );
+  }
+
 }
